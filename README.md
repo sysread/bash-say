@@ -71,7 +71,7 @@ Colors are controlled with the following command tokens:
 
 # INSTALLATION
 
-    curl -o $HOME/bin/say https://raw.githubusercontent.com/sysread/say/master/say && chmod +x $HOME/bin/say
+    curl -o $HOME/bin/say https://raw.githubusercontent.com/sysread/bash-say/master/say && chmod +x $HOME/bin/say
 
 # AUTHOR
 

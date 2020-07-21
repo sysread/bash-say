@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 read -r -d '' VERSION <<'HERE'
 say version 1.0
