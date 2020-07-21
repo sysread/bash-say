@@ -69,15 +69,15 @@ Colors are controlled with the following command tokens:
     Ansi_XXX
     On_Ansi_XXX
 
-#INSTALLATION
+# INSTALLATION
 
     curl -o $HOME/bin/say https://raw.githubusercontent.com/sysread/say/master/say && chmod +x $HOME/bin/say
 
-#AUTHOR
+# AUTHOR
 
 Jeff Ober <sysread@fastmail.fm>
 
-#COPYRIGHT AND LICENSE
+# COPYRIGHT AND LICENSE
 
 Copyright (c) 2020 Jeff Ober
 
