@@ -1,0 +1,190 @@
+#!/usr/bin/bash
+
+read -r -d '' VERSION <<'HERE'
+say version 1.0
+Copyright (c) 2020 Jeff Ober
+License MIT: https://mit-license.org/
+
+Written by Jeff Ober
+HERE
+
+read -r -d '' USAGE <<'HERE'
+
+    say [options] [tokens+]
+
+Options:
+
+    --help    | -h      display this help text
+    --version | -v      display version information
+                -n      do not output a newline
+                -e      enable string escapes
+                -E      disable string escapes (default)
+
+Displays a colorized line of text.
+
+Colors are controlled with the following command tokens:
+
+    Clear
+    Reset
+    Bold
+    Dim
+    Italic
+    Underline
+    Blink
+    Invert
+    Hidden
+    Default
+
+    Black
+    Blue
+    Cyan
+    Green
+    Magenta
+    Red
+    White
+    Yellow
+
+    Bold_Black
+    Bold_Blue
+    Bold_Cyan
+    Bold_Green
+    Bold_Magenta
+    Bold_Red
+    Bold_White
+    Bold_Yellow
+
+    On_Black
+    On_Blue
+    On_Cyan
+    On_Green
+    On_Magenta
+    On_Red
+    On_White
+    On_Yellow
+
+    On_Bold_Black
+    On_Bold_Blue
+    On_Bold_Cyan
+    On_Bold_Green
+    On_Bold_Magenta
+    On_Bold_Red
+    On_Bold_White
+    On_Bold_Yellow
+
+    # 256 colors
+    Ansi_XXX
+    On_Ansi_XXX
+HERE
+
+
+#-------------------------------------------------------------------------------
+# Scan for arguments to say
+#-------------------------------------------------------------------------------
+NEWLINE=1
+ESCAPES=0
+ECHO_ARGS="-n"
+
+for arg in "$@"; do
+    case $arg in
+        --help|-h)
+            echo "$USAGE"
+            echo
+            exit 0
+            ;;
+
+        --version|-v)
+            echo "$VERSION"
+            echo
+            exit 0
+            ;;
+
+        -n)
+            NEWLINE=0
+            shift
+            ;;
+
+        -e)
+            ESCAPES=1
+            shift
+            ;;
+
+        -E)
+            ESCAPES=0
+            shift
+            ;;
+
+        *)
+            break;
+            ;;
+    esac
+done
+
+if [ $ESCAPES -eq 1 ];
+    then ECHO_ARGS+=" -e";
+fi
+
+
+#-------------------------------------------------------------------------------
+# Process each token in the list
+#-------------------------------------------------------------------------------
+for tok in "$@"; do
+    case $tok in
+        Clear)           echo -n -e "\e[0m";;
+        Reset)           echo -n -e "\e[0m";;
+        Bold)            echo -n -e "\e[1m";;
+        Dim)             echo -n -e "\e[2m";;
+        Italic)          echo -n -e "\e[3m";;
+        Underline)       echo -n -e "\e[4m";;
+        Blink)           echo -n -e "\e[5m";;
+        Invert)          echo -n -e "\e[7m";;
+        Hidden)          echo -n -e "\e[8m";;
+        Default)         echo -n -e "\e[39m";;
+
+        Black)           echo -n -e "\e[30m";;
+        Blue)            echo -n -e "\e[34m";;
+        Cyan)            echo -n -e "\e[36m";;
+        Green)           echo -n -e "\e[32m";;
+        Magenta)         echo -n -e "\e[35m";;
+        Red)             echo -n -e "\e[31m";;
+        White)           echo -n -e "\e[37m";;
+        Yellow)          echo -n -e "\e[33m";;
+
+        Bold_Black)      echo -n -e "\e[90m";;
+        Bold_Blue)       echo -n -e "\e[94m";;
+        Bold_Cyan)       echo -n -e "\e[96m";;
+        Bold_Green)      echo -n -e "\e[92m";;
+        Bold_Magenta)    echo -n -e "\e[95m";;
+        Bold_Red)        echo -n -e "\e[91m";;
+        Bold_White)      echo -n -e "\e[97m";;
+        Bold_Yellow)     echo -n -e "\e[93m";;
+
+        On_Black)        echo -n -e "\e[40m";;
+        On_Blue)         echo -n -e "\e[44m";;
+        On_Cyan)         echo -n -e "\e[46m";;
+        On_Green)        echo -n -e "\e[42m";;
+        On_Magenta)      echo -n -e "\e[45m";;
+        On_Red)          echo -n -e "\e[41m";;
+        On_White)        echo -n -e "\e[47m";;
+        On_Yellow)       echo -n -e "\e[43m";;
+
+        On_Bold_Black)   echo -n -e "\e[100m";;
+        On_Bold_Blue)    echo -n -e "\e[104m";;
+        On_Bold_Cyan)    echo -n -e "\e[106m";;
+        On_Bold_Green)   echo -n -e "\e[102m";;
+        On_Bold_Magenta) echo -n -e "\e[105m";;
+        On_Bold_Red)     echo -n -e "\e[101m";;
+        On_Bold_White)   echo -n -e "\e[107m";;
+        On_Bold_Yellow)  echo -n -e "\e[103m";;
+
+        Ansi_*)          echo -n -e "\e[38;5;${tok/Ansi_/}m";;
+        On_Ansi_*)       echo -n -e "\e[48;5;${tok/On_Ansi_/}m";;
+
+        *)               echo $ECHO_ARGS "$tok";;
+    esac
+done
+
+echo -e -n "\e[0m"
+
+if [ $NEWLINE -eq 1 ]; then
+    echo
+fi
