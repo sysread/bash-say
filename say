@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 read -r -d '' VERSION <<'HERE'
-say version 1.1
+say version 1.2
 Copyright (c) 2020 Jeff Ober
 License MIT: https://mit-license.org/
 
@@ -97,51 +97,13 @@ fi
 #-------------------------------------------------------------------------------
 : ${SAY_NEWLINE:=1}
 : ${SAY_ESCAPES:=0}
+
 ECHO_ARGS='-n'
 
+#-------------------------------------------------------------------------------
+# Main loop
+#-------------------------------------------------------------------------------
 function say:main {
-    #---------------------------------------------------------------------------
-    # Scan for arguments to say
-    #---------------------------------------------------------------------------
-    for arg in "$@"; do
-        case $arg in
-            --help|-h)
-                echo "$USAGE"
-                echo
-                exit 0
-                ;;
-
-            --version|-v)
-                echo "$VERSION"
-                echo
-                exit 0
-                ;;
-
-            -n)
-                SAY_NEWLINE=0
-                shift
-                ;;
-
-            -e)
-                SAY_ESCAPES=1
-                shift
-                ;;
-
-            -E)
-                SAY_ESCAPES=0
-                shift
-                ;;
-
-            *)
-                break;
-                ;;
-        esac
-    done
-
-    if [ $SAY_ESCAPES -eq 1 ];
-        then ECHO_ARGS+=" -e";
-    fi
-
     #---------------------------------------------------------------------------
     # Process each token in the list
     #---------------------------------------------------------------------------
@@ -208,12 +170,56 @@ function say:main {
     fi
 }
 
+#-------------------------------------------------------------------------------
 # If being sourced as a library, then define 'say' as a function. Otherwise,
 # run say:main directly.
+#-------------------------------------------------------------------------------
 if [ $AS_LIB -eq 1 ]; then
     function say {
         say:main $@
     }
 else
+    #---------------------------------------------------------------------------
+    # Scan for arguments to say
+    #---------------------------------------------------------------------------
+    for arg in "$@"; do
+        case $arg in
+            --help|-h)
+                echo "$USAGE"
+                echo
+                exit 0
+                ;;
+
+            --version|-v)
+                echo "$VERSION"
+                echo
+                exit 0
+                ;;
+
+            -n)
+                SAY_NEWLINE=0
+                shift
+                ;;
+
+            -e)
+                SAY_ESCAPES=1
+                shift
+                ;;
+
+            -E)
+                SAY_ESCAPES=0
+                shift
+                ;;
+
+            *)
+                break;
+                ;;
+        esac
+    done
+
+    if [ $SAY_ESCAPES -eq 1 ];
+        then ECHO_ARGS+=" -e";
+    fi
+
     say:main $@
 fi

@@ -1,4 +1,7 @@
 2020-07-24
+  * Bugfix
+
+2020-07-24
   * When imported using `source`, defines function `say()`
 
 2020-07-21
