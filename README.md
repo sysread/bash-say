@@ -73,6 +73,19 @@ Colors are controlled with the following command tokens:
 
     curl -o $HOME/bin/say https://raw.githubusercontent.com/sysread/bash-say/master/say && chmod +x $HOME/bin/say
 
+# USE AS A LIBRARY
+
+If you import `say` using `source`, it will define the function `say` for use
+in your own scripts. When used as a function, `-n`, `-e`, and `-E` options'
+equivalents are controlled by variables. The defaults are shown in the example:
+
+    SAY_NEWLINE=1   # output a newline at the end of all function arguments
+    SAY_ESCAPES=0   # allow escape codes in input strings (e.g. "\n")
+
+    source "./say"
+
+    say "Hello, " Green $USER
+
 # AUTHOR
 
 Jeff Ober <sysread@fastmail.fm>
